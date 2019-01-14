@@ -290,21 +290,20 @@ typedef struct index{
 }Index;
 
 //mapping function returns the cpu number bound to the thread	author：hh
-int mapping(int procs,int nthread){
-	int proc_num=procs;
-	//printf("nprocs:%d\n",proc_num);
-	Index* index=(Index*)malloc(proc_num*sizeof(Index));
+int mapping(int proc_num,int thread_num,int t_no){
+	printf("nprocs:%d\n",proc_num);
+	Index* index=(Index*)malloc(thread_num*sizeof(Index));
 	int tnum=0,cnum=0;
-	while(tnum<proc_num){
+	while(tnum<thread_num){
 		index[tnum].thread_no=tnum;
 		index[tnum].cpu_no=cnum;
 		tnum++;
-		cnum=cnum+2;
+		cnum++;
 		if(cnum>=proc_num){
-			cnum=1;		
+			cnum=0;		
 		}
 	} 
-	return index[nthread].cpu_no;      
+	index[t_no].cpu_no;      
 }
 
  
@@ -347,7 +346,7 @@ int main(int argc, char *argv[])
         clock_gettime(CLOCK_MONOTONIC, &tm_start);
         int i=0;
         for( i = 0; i < nr_parallel_threads; ++i) {
-                thread_param[i].cpu_id = mapping(get_nprocs(),i);
+                thread_param[i].cpu_id = mapping(get_nprocs(),nr_parallel_threads,i);
                 thread_param[i].lock_interval=lock_delay;
                 pthread_create(&thread_list[i], NULL, thread_routine, thread_param+i);
         }
