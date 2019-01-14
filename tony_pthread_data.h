@@ -22,7 +22,7 @@ struct thread_data
 
         pthread_t pthread;
 		
-		int count;//增加单个线程lock_count成员变量
+	int count;	//Add a single thread lock_count member variable. 	author:hh
 
 };
 
